@@ -61,16 +61,16 @@ input:focus {
 /* Cuadrícula de Horarios Neón */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
     margin: 25px 0;
 }
 
 .time-slot {
-    padding: 12px 5px;
+    padding: 10px 2px;
     border-radius: 8px;
     font-weight: bold;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     background: transparent;
     transition: all 0.3s ease;
