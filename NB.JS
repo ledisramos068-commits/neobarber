@@ -13,7 +13,6 @@ const firebaseConfig = {
 
 // Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app); // Analytics opcional
 
 // Obtener referencia a Firestore
 const db = firebase.firestore();
@@ -74,6 +73,13 @@ async function saveAppointment() {
         userPhoneInput.value = '';
         appointmentSelected = null;
 
+        // Limpiar selección visual
+        timeSlots.forEach(slot => {
+            slot.classList.remove('selected');
+            slot.style.borderStyle = 'solid';
+            slot.style.borderWidth = '1px';
+        });
+
         // Recargar las citas
         loadAppointments();
         updateTimeSlots();
@@ -126,7 +132,7 @@ function displayAppointments() {
 
     appointments.forEach(apt => {
         const li = document.createElement('li');
-        li.textContent = `${apt.name} ${apt.time}`;
+        li.innerHTML = `${apt.name} ${apt.time} <button class="delete-btn" onclick="deleteAppointment('${apt.id}')">X</button>`;
         appointmentsList.appendChild(li);
     });
 }
@@ -143,8 +149,12 @@ function updateTimeSlots() {
         const time = slot.getAttribute('data-time');
 
         if (bookedTimes.includes(time)) {
-            slot.classList.remove('available');
+            slot.classList.remove('available', 'selected');
             slot.classList.add('booked');
+            // Si este slot estaba seleccionado, quitar selección
+            if (appointmentSelected === time) {
+                appointmentSelected = null;
+            }
         } else {
             slot.classList.remove('booked');
             slot.classList.add('available');
@@ -164,9 +174,14 @@ timeSlots.forEach(slot => {
         }
 
         // Remover selección anterior
-        timeSlots.forEach(s => s.style.borderStyle = 'solid');
+        timeSlots.forEach(s => {
+            s.classList.remove('selected');
+            s.style.borderStyle = 'solid';
+            s.style.borderWidth = '1px';
+        });
 
         // Seleccionar nuevo slot
+        this.classList.add('selected');
         this.style.borderStyle = 'double';
         this.style.borderWidth = '3px';
         appointmentSelected = this.getAttribute('data-time');
@@ -217,7 +232,13 @@ function addSaveButton() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Aplicación Neo Barber iniciada');
     
-    // Agregar botón de guardar
+    // Conectar botón de aceptar cita
+    const acceptBtn = document.getElementById('acceptBtn');
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', saveAppointment);
+    }
+
+    // Agregar botón de guardar (antiguo - opcional)
     addSaveButton();
 
     // Cargar citas de Firebase
@@ -226,3 +247,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar citas cada 5 segundos (opcional)
     setInterval(loadAppointments, 5000);
 });
+
+// ============================================
+// FUNCIÓN PARA ELIMINAR CITA
+// ============================================
+async function deleteAppointment(docId) {
+    if (confirm("¿Marcar como terminada o eliminar?")) {
+        try {
+            await db.collection('appointments').doc(docId).delete();
+            alert("Cita eliminada");
+            loadAppointments(); // Recargar lista
+        } catch (error) {
+            console.error("Error al eliminar:", error);
+        }
+    }
+}

@@ -54,6 +54,7 @@ input {
 
 .available { background-color: #76ba1b; color: black; }
 .booked { background-color: #ff0000; color: black; cursor: not-allowed; }
+.selected { background-color: #ffd700 !important; color: black; font-weight: bold; }
 
 .legend { font-weight: bold; font-style: italic; margin-top: 10px; }
 
@@ -74,7 +75,45 @@ input {
 .appointment-list { list-style: none; padding: 0; }
 .appointment-list li { margin-bottom: 10px; font-weight: bold; text-decoration: underline; }
 
+.delete-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000;
+}
+
 .hora-preferida {
     font-weight: bold;
     text-decoration: underline;
+}
+
+.accept-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.accept-btn:hover {
+    background-color: #e67e00;
+}
+
+.accept-btn:active {
+    background-color: #cc6600;
 }

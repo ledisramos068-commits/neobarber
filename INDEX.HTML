@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="NB.CSS">
 </head>
 <body>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <!-- Firebase SDK (Versión de Compatibilidad) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <!-- El de Auth no lo estás usando aún, pero si lo dejas, úsalo así: -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 
 <div class="container">
     <h1>NEO BARBER</h1>
@@ -25,29 +26,29 @@
         <div class="time-slot available" data-time="9 AM">9 AM</div>
         <div class="time-slot available" data-time="9:30 AM">9:30 AM</div>
         <div class="time-slot available" data-time="10 AM">10 AM</div>
-        <div class="time-slot booked" data-time="10:30 AM">10:30 AM</div>
-        <div class="time-slot booked" data-time="11:00 AM">11:00 AM</div>
-        <div class="time-slot booked" data-time="11:30 AM">11:30 AM</div>
+        <div class="time-slot available" data-time="10:30 AM">10:30 AM</div>
+        <div class="time-slot available" data-time="11:00 AM">11:00 AM</div>
+        <div class="time-slot available" data-time="11:30 AM">11:30 AM</div>
         <div class="time-slot available" data-time="12:00 PM">12:00 PM</div>
         <div class="time-slot available" data-time="12:30 PM">12:30 PM</div>
         <div class="time-slot available" data-time="1:00 PM">1:00 PM</div>
         <div class="time-slot available" data-time="1:30 PM">1:30 PM</div>
         <div class="time-slot available" data-time="2:00 PM">2:00 PM</div>
-        <div class="time-slot booked" data-time="2:30 PM">2:30 PM</div>
+        <div class="time-slot available" data-time="2:30 PM">2:30 PM</div>
         <div class="time-slot available" data-time="3:00 PM">3:00 PM</div>
         <div class="time-slot available" data-time="3:30 PM">3:30 PM</div>
-        <div class="time-slot booked" data-time="4:00 PM">4:00 PM</div>
+        <div class="time-slot available" data-time="4:00 PM">4:00 PM</div>
         <div class="time-slot available" data-time="4:30 PM">4:30 PM</div>
     </div>
 
     <p class="legend">¿LAS VERDES SON LAS HORAS DISPONIBLES!</p>
 
+    <button id="acceptBtn" class="accept-btn">ACEPTAR CITA</button>
+
     <div class="pending-section">
         <div class="pending-title">CITAS PENDIENTES HOY</div>
         <ul class="appointment-list" id="appointmentsList">
-            <li>PEPITO PEREZ 11:30 AM</li>
-            <li>CALVO 11:00 AM</li>
-            <li>ELENA 11:30 AM</li>
+            <!-- Las citas se cargarán dinámicamente desde Firebase -->
         </ul>
     </div>
 </div>
