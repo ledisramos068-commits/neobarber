@@ -1,79 +1,175 @@
+/* Configuración General y Fondo Industrial */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Roboto', sans-serif;
+    background: radial-gradient(circle, #2c2c2c 0%, #000000 100%);
+    background-attachment: fixed;
+    color: white;
     display: flex;
     justify-content: center;
     padding: 20px;
+    min-height: 100vh;
 }
 
+/* Contenedor Efecto Cristal (Glassmorphism) */
 .container {
-    background-color: white;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     width: 100%;
     max-width: 500px;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 40px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     text-align: center;
 }
 
+/* Título Neón */
 h1 {
+    font-family: 'Orbitron', sans-serif;
     color: #ff8c00;
-    font-size: 3rem;
-    margin-bottom: 5px;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
     text-transform: uppercase;
-    -webkit-text-stroke: 1px black;
+    text-shadow: 0 0 10px #ff8c00, 0 0 20px #ff4500;
 }
 
-.subtitle { font-weight: bold; margin-bottom: 20px; }
+.subtitle { color: #aaa; font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 1px; }
 
+/* Inputs Estilizados */
 input {
-    width: 90%;
-    padding: 12px;
+    width: 85%;
+    padding: 15px;
     margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
     font-size: 1rem;
+    text-align: center;
+    transition: 0.3s;
 }
 
+input:focus {
+    outline: none;
+    border-color: #ff8c00;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Cuadrícula de Horarios Neón */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin: 20px 0;
+    gap: 12px;
+    margin: 25px 0;
 }
 
 .time-slot {
-    padding: 10px 5px;
-    border: 1px solid #000;
+    padding: 12px 5px;
+    border-radius: 8px;
     font-weight: bold;
+    font-size: 0.85rem;
     cursor: pointer;
-    text-decoration: underline;
-    font-size: 0.9rem;
+    background: transparent;
+    transition: all 0.3s ease;
+    border: 2px solid;
 }
 
-.available { background-color: #76ba1b; color: black; }
-.booked { background-color: #ff0000; color: black; cursor: not-allowed; }
-.selected { background-color: #ffd700 !important; color: black; font-weight: bold; }
+/* Colores de los Slots */
+.available {
+    border-color: #39ff14;
+    color: #39ff14;
+    box-shadow: inset 0 0 5px rgba(57, 255, 20, 0.2);
+}
+.available:hover {
+    background: #39ff14;
+    color: black;
+    box-shadow: 0 0 15px #39ff14;
+}
 
-.legend { font-weight: bold; font-style: italic; margin-top: 10px; }
+.booked {
+    border-color: #ff3131;
+    color: #ff3131;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
+.selected {
+    background: #ffd700 !important;
+    border-color: #ffd700;
+    color: black !important;
+    box-shadow: 0 0 20px #ffd700;
+}
+
+/* Botón Aceptar Cita (Naranja Vibrante) */
+.accept-btn {
+    width: 80%;
+    background: linear-gradient(45deg, #ff8c00, #ff4500);
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+.accept-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.6);
+}
+
+/* Lista de Citas (Caja Inferior) */
 .pending-section {
-    margin-top: 30px;
-    border-top: 2px solid #eee;
+    margin-top: 40px;
     padding-top: 20px;
 }
 
 .pending-title {
-    background-color: #00ff00;
-    display: inline-block;
-    padding: 5px 15px;
-    font-weight: bold;
+    color: #ff8c00;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
     margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 140, 0, 0.3);
+    padding-bottom: 5px;
 }
 
-.appointment-list { list-style: none; padding: 0; }
-.appointment-list li { margin-bottom: 10px; font-weight: bold; text-decoration: underline; }
+.appointment-list li {
+    background: rgba(255, 255, 255, 0.05);
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #ff8c00;
+}
+
+/* Estilos para el Spinner */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Estado deshabilitado del botón */
+.accept-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
 /* Ocultar botones de borrar por defecto */
 .delete-btn {
@@ -101,52 +197,55 @@ input {
     background-color: #cc0000;
 }
 
-.hora-preferida {
+/* Botón de borrar todo (oculto por defecto) */
+.delete-all-btn {
+    display: none;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #ff0000;
+    padding: 8px 15px;
     font-weight: bold;
-    text-decoration: underline;
-}
-
-.accept-btn {
-    margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 1rem;
-    background-color: #ff8c00;
-    color: white;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+    width: 90%;
+    transition: all 0.3s ease;
 }
 
-/* Estilos para el Spinner */
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
+.delete-all-btn:hover {
+    background-color: #ff0000;
+}
+
+/* Solo se muestra cuando el contenedor principal tiene la clase admin-mode-active */
+.admin-mode-active .delete-all-btn {
     display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* Estilos para el contenedor de licencias/créditos */
+.credits-container {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.75rem; /* Letra pequeña */
+    color: rgba(255, 255, 255, 0.5); /* Blanco semi-transparente para que sea discreto */
+    letter-spacing: 1px;
+    line-height: 1.6;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
 }
 
-/* Estado deshabilitado del botón */
-.accept-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-} 
-
-.accept-btn:hover {
-    background-color: #e67e00;
+.credits-container p {
+    margin: 5px 0;
 }
 
-.accept-btn:active {
-    background-color: #cc6600;
+.credits-container strong {
+    color: #ff8c00; /* Resaltamos tu nombre con el naranja de la marca */
+    text-shadow: 0 0 5px rgba(255, 140, 0, 0.3);
+}
+
+/* Ajuste opcional para dispositivos móviles */
+@media (max-width: 480px) {
+    .credits-container {
+        font-size: 0.65rem;
+        padding: 0 10px;
+    }
 }

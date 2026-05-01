@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Barber - Citas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="NB.CSS">
 </head>
 <body>
@@ -15,7 +17,7 @@
 
 <div class="container">
     <h1>NEO BARBER</h1>
-    <p class="subtitle">SELECCIONA TU CITA PARA HOY O MAÑANA</p>
+    <p class="subtitle">SELECCIONA TU CITA PARA HOY</p>
 
     <input type="text" id="userName" placeholder="INGRESA TU NOMBRE">
     <input type="tel" id="userPhone" placeholder="NUMERO DE CELULAR">
@@ -50,11 +52,20 @@
 
     <div class="pending-section">
         <div class="pending-title">CITAS PENDIENTES HOY</div>
+        <!-- Nuevo botón para borrar todo -->
+        <button id="deleteAllBtn" class="delete-all-btn" onclick="deleteAllAppointments()">BORRAR TODA LA AGENDA</button>
+        
         <ul class="appointment-list" id="appointmentsList">
             <!-- Las citas se cargarán dinámicamente desde Firebase -->
         </ul>
     </div>
 </div>
+
+<footer class="credits-container">
+    <p>CREADO POR <strong>DIOMER SOTO</strong></p>
+    <p>© 2026</p>
+    <p>PRACTICAS LABORALES UNIVERSIDAD MINUTO DE DIOS</p>
+</footer>
 
 <script src="NB.JS"></script>
 </body>

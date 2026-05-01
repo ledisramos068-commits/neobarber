@@ -256,12 +256,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Truco: Clic en el título para activar modo admin
     const title = document.querySelector('h1');
+    const pendingSection = document.querySelector('.pending-section'); // Seleccionamos la sección
+
     if (title) {
         title.style.cursor = 'pointer';
         title.addEventListener('click', function() {
             const pass = prompt("Introduce el PIN de administrador:");
             if (pass === ADMIN_PIN) {
-                isAdmin = !isAdmin; // Activa o desactiva
+                isAdmin = !isAdmin;
+                
+                // Toggle de clase para mostrar/ocultar botones de borrar
+                if (isAdmin) {
+                    pendingSection.classList.add('admin-mode-active');
+                } else {
+                    pendingSection.classList.remove('admin-mode-active');
+                }
+                
                 alert(isAdmin ? "Modo Administrador Activo" : "Modo Administrador Desactivado");
                 displayAppointments(); // Refresca la lista para mostrar/ocultar botones
             } else {
@@ -288,3 +298,38 @@ async function deleteAppointment(docId) {
         }
     }
 }
+
+// ============================================
+// FUNCIÓN PARA BORRAR TODA LA AGENDA
+// ============================================
+async function deleteAllAppointments() {
+    if (confirm("¿ESTÁS SEGURO? Esto borrará todas las citas de la lista.")) {
+        try {
+            const today = new Date().toLocaleDateString('es-ES');
+            const snapshot = await db.collection('appointments')
+                .where('date', '==', today)
+                .get();
+
+            if (snapshot.empty) {
+                alert("No hay citas para borrar.");
+                return;
+            }
+
+            // Borrar cada documento encontrado
+            const batch = db.batch();
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+
+            await batch.commit();
+            alert("¡Agenda de hoy limpiada con éxito!");
+            loadAppointments(); // Recargar la lista y los slots
+        } catch (error) {
+            console.error("Error al borrar todo:", error);
+            alert("Hubo un error al intentar vaciar la agenda.");
+        }
+    }
+}
+
+// Hacer la función accesible globalmente
+window.deleteAllAppointments = deleteAllAppointments;
