@@ -120,6 +120,29 @@ input {
     transition: background-color 0.3s ease;
 }
 
+/* Estilos para el Spinner */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Estado deshabilitado del botón */
+.accept-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+} 
+
 .accept-btn:hover {
     background-color: #e67e00;
 }

@@ -42,21 +42,23 @@ async function saveAppointment() {
     const phone = userPhoneInput.value.trim();
     const time = appointmentSelected;
 
-    // Validar que todos los campos estén completos
-    if (!name) {
-        alert('Por favor, ingresa tu nombre');
-        return;
-    }
-    if (!phone) {
-        alert('Por favor, ingresa tu número de celular');
-        return;
-    }
-    if (!time) {
-        alert('Por favor, selecciona una hora');
+    // Referencias a elementos del botón
+    const btn = document.getElementById('acceptBtn');
+    const btnText = document.getElementById('btnText');
+    const loader = document.getElementById('loader');
+
+    // Validaciones
+    if (!name || !phone || !time) {
+        alert('Por favor, completa todos los campos y selecciona una hora');
         return;
     }
 
     try {
+        // --- ACTIVAR LOADING ---
+        btn.disabled = true;       // Deshabilitar clic
+        btnText.style.display = "none"; // Ocultar texto
+        loader.style.display = "inline-block"; // Mostrar spinner
+
         // Guardar cita en Firestore
         await db.collection('appointments').add({
             name: name,
@@ -67,28 +69,32 @@ async function saveAppointment() {
             status: 'confirmada'
         });
 
-        // Mostrar mensaje de éxito
         alert(`¡Cita confirmada para ${name} a las ${time}!`);
 
         // Limpiar formulario
         userNameInput.value = '';
         userPhoneInput.value = '';
         appointmentSelected = null;
+        
+        // Recargar datos
+        loadAppointments();
 
-        // Limpiar selección visual
+    } catch (error) {
+        console.error('Error al guardar:', error);
+        alert('Ocurrió un error. Intenta de nuevo.');
+    } finally {
+        // --- DESACTIVAR LOADING ---
+        // Este bloque siempre se ejecuta, salga bien o mal el proceso
+        btn.disabled = false;
+        btnText.style.display = "inline-block";
+        loader.style.display = "none";
+        
+        // Limpiar selección visual (de tu código original)
         timeSlots.forEach(slot => {
             slot.classList.remove('selected');
             slot.style.borderStyle = 'solid';
             slot.style.borderWidth = '1px';
         });
-
-        // Recargar las citas
-        loadAppointments();
-        updateTimeSlots();
-
-    } catch (error) {
-        console.error('Error al guardar la cita:', error);
-        alert('Ocurrió un error al guardar la cita. Intenta de nuevo.');
     }
 }
 
