@@ -140,14 +140,23 @@ input:focus {
 }
 
 .appointment-list li {
-    background: rgba(255, 255, 255, 0.05);
-    margin: 8px 0;
-    padding: 12px;
-    border-radius: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 8px 0;
+    border-radius: 10px;
     border-left: 4px solid #ff8c00;
+}
+
+.appointment-list li small {
+    display: block;
+    margin-top: 5px;
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: #39ff14;
 }
 
 /* Estilos para el Spinner */

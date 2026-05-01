@@ -138,17 +138,35 @@ function displayAppointments() {
         return;
     }
 
-    // Añadir clase admin al contenedor si isAdmin es true
+    // Seleccionamos la sección para el modo admin (para el botón de borrar todo)
+    const pendingSection = document.querySelector('.pending-section');
+
     if (isAdmin) {
         appointmentsList.classList.add('admin-mode');
+        pendingSection.classList.add('admin-mode-active');
     } else {
         appointmentsList.classList.remove('admin-mode');
+        pendingSection.classList.remove('admin-mode-active');
     }
 
     appointments.forEach(apt => {
         const li = document.createElement('li');
-        // El botón siempre se crea, pero el CSS lo oculta si no es admin
-        li.innerHTML = `${apt.name} ${apt.time} <button class="delete-btn" onclick="deleteAppointment('${apt.id}')">X</button>`;
+        
+        // --- LÓGICA DE VISIBILIDAD ---
+        // Si es admin, mostramos Nombre + Hora + Teléfono + Botón X
+        // Si no es admin, solo Nombre + Hora
+        if (isAdmin) {
+            li.innerHTML = `
+                <div>
+                    <strong>${apt.name}</strong> - ${apt.time}<br>
+                    <small style="color: #39ff14;">📞 ${apt.phone}</small>
+                </div>
+                <button class="delete-btn" onclick="deleteAppointment('${apt.id}')">X</button>
+            `;
+        } else {
+            li.innerHTML = `<span>${apt.name} - ${apt.time}</span>`;
+        }
+        
         appointmentsList.appendChild(li);
     });
 } 
