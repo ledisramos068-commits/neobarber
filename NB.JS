@@ -238,9 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
         acceptBtn.addEventListener('click', saveAppointment);
     }
 
-    // Agregar botón de guardar (antiguo - opcional)
-    addSaveButton();
-
     // Cargar citas de Firebase
     loadAppointments();
 
