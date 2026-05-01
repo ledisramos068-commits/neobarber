@@ -5,9 +5,11 @@ body {
     background-attachment: fixed;
     color: white;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Esto obliga a que los elementos se apilen uno arriba de otro */
+    align-items: center;    /* Centra todo horizontalmente */
     padding: 20px;
     min-height: 100vh;
+    margin: 0;
 }
 
 /* Contenedor Efecto Cristal (Glassmorphism) */
@@ -222,23 +224,20 @@ input:focus {
 
 /* Estilos para el contenedor de licencias/créditos */
 .credits-container {
-    margin-top: 30px;
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin-top: auto;      /* Empuja el footer hacia el fondo si hay espacio sobrante */
+    padding: 40px 0 20px 0; /* Espacio arriba para que no pegue con el cuadro blanco */
     text-align: center;
-    font-size: 0.75rem; /* Letra pequeña */
-    color: rgba(255, 255, 255, 0.5); /* Blanco semi-transparente para que sea discreto */
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
     letter-spacing: 1px;
-    line-height: 1.6;
-    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
     text-transform: uppercase;
 }
 
-.credits-container p {
-    margin: 5px 0;
-}
-
 .credits-container strong {
-    color: #ff8c00; /* Resaltamos tu nombre con el naranja de la marca */
+    color: #ff8c00;
     text-shadow: 0 0 5px rgba(255, 140, 0, 0.3);
 }
 
