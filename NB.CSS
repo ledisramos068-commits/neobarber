@@ -75,6 +75,16 @@ input {
 .appointment-list { list-style: none; padding: 0; }
 .appointment-list li { margin-bottom: 10px; font-weight: bold; text-decoration: underline; }
 
+/* Ocultar botones de borrar por defecto */
+.delete-btn {
+    display: none;
+}
+
+/* Solo se muestran cuando el contenedor tiene la clase 'admin-mode' */
+.admin-mode .delete-btn {
+    display: inline-block;
+}
+
 .delete-btn {
     margin-left: 10px;
     padding: 5px 10px;

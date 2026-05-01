@@ -22,6 +22,8 @@ const db = firebase.firestore();
 // ============================================
 let appointmentSelected = null;
 const appointments = [];
+let isAdmin = false;
+const ADMIN_PIN = "1234";
 
 // ============================================
 // ELEMENTOS DEL DOM
@@ -130,12 +132,20 @@ function displayAppointments() {
         return;
     }
 
+    // Añadir clase admin al contenedor si isAdmin es true
+    if (isAdmin) {
+        appointmentsList.classList.add('admin-mode');
+    } else {
+        appointmentsList.classList.remove('admin-mode');
+    }
+
     appointments.forEach(apt => {
         const li = document.createElement('li');
+        // El botón siempre se crea, pero el CSS lo oculta si no es admin
         li.innerHTML = `${apt.name} ${apt.time} <button class="delete-btn" onclick="deleteAppointment('${apt.id}')">X</button>`;
         appointmentsList.appendChild(li);
     });
-}
+} 
 
 // ============================================
 // ACTUALIZAR ESTADO DE SLOTS DE TIEMPO
@@ -238,10 +248,23 @@ document.addEventListener('DOMContentLoaded', function() {
         acceptBtn.addEventListener('click', saveAppointment);
     }
 
-    // Cargar citas de Firebase
-    loadAppointments();
+    // Truco: Clic en el título para activar modo admin
+    const title = document.querySelector('h1');
+    if (title) {
+        title.style.cursor = 'pointer';
+        title.addEventListener('click', function() {
+            const pass = prompt("Introduce el PIN de administrador:");
+            if (pass === ADMIN_PIN) {
+                isAdmin = !isAdmin; // Activa o desactiva
+                alert(isAdmin ? "Modo Administrador Activo" : "Modo Administrador Desactivado");
+                displayAppointments(); // Refresca la lista para mostrar/ocultar botones
+            } else {
+                alert("PIN Incorrecto");
+            }
+        });
+    }
 
-    // Actualizar citas cada 5 segundos (opcional)
+    loadAppointments();
     setInterval(loadAppointments, 5000);
 });
 
