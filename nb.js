@@ -75,9 +75,6 @@ async function saveAppointment() {
         userNameInput.value = '';
         userPhoneInput.value = '';
         appointmentSelected = null;
-        
-        // Recargar datos
-        loadAppointments();
 
     } catch (error) {
         console.error('Error al guardar:', error);
@@ -99,32 +96,32 @@ async function saveAppointment() {
 }
 
 // ============================================
-// FUNCIONES DE FIREBASE - CARGAR CITAS
+// CARGAR CITAS EN TIEMPO REAL (VERSIÓN COMPAT)
 // ============================================
-async function loadAppointments() {
-    try {
-        const today = new Date().toLocaleDateString('es-ES');
-        const snapshot = await db.collection('appointments')
-            .where('date', '==', today)
-            .where('status', '==', 'confirmada')
-            .get();
+function listenToAppointments() {
+    const today = new Date().toLocaleDateString('es-ES');
+    
+    // En lugar de .get(), usamos .onSnapshot()
+    // Esto se queda "escuchando" cambios sin gastar créditos extra
+    db.collection('appointments')
+        .where('date', '==', today)
+        .where('status', '==', 'confirmada')
+        .onSnapshot((snapshot) => {
+            appointments.length = 0; // Limpiamos el array actual
 
-        appointments.length = 0; // Limpiar array
-
-        snapshot.forEach(doc => {
-            appointments.push({
-                id: doc.id,
-                ...doc.data()
+            snapshot.forEach(doc => {
+                appointments.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
             });
+
+            console.log("Sincronización con Firebase exitosa");
+            displayAppointments(); // Actualiza la lista de nombres
+            updateTimeSlots();     // Actualiza los cuadros verdes/rojos
+        }, (error) => {
+            console.error("Error en tiempo real:", error);
         });
-
-        // Actualizar la UI
-        displayAppointments();
-        updateTimeSlots();
-
-    } catch (error) {
-        console.error('Error al cargar las citas:', error);
-    }
 }
 
 // ============================================
@@ -298,8 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    loadAppointments();
-    setInterval(loadAppointments, 5000);
+    listenToAppointments();
 });
 
 // ============================================
@@ -310,7 +306,6 @@ async function deleteAppointment(docId) {
         try {
             await db.collection('appointments').doc(docId).delete();
             alert("Cita eliminada");
-            loadAppointments(); // Recargar lista
         } catch (error) {
             console.error("Error al eliminar:", error);
         }
@@ -341,7 +336,6 @@ async function deleteAllAppointments() {
 
             await batch.commit();
             alert("¡Agenda de hoy limpiada con éxito!");
-            loadAppointments(); // Recargar la lista y los slots
         } catch (error) {
             console.error("Error al borrar todo:", error);
             alert("Hubo un error al intentar vaciar la agenda.");
