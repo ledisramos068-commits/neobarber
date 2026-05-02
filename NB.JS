@@ -11,26 +11,11 @@ const firebaseConfig = {
     appId: "1:397783682916:web:eaf784f3aaf50eb740f471"
 };
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    query,
-    where,
-    orderBy,
-    onSnapshot,
-    deleteDoc,
-    doc,
-    writeBatch,
-    getDocs
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
 // Inicializar Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 // Obtener referencia a Firestore
-const db = getFirestore(app);
+const db = firebase.firestore();
 
 // ============================================
 // VARIABLES GLOBALES
@@ -75,7 +60,7 @@ async function saveAppointment() {
         loader.style.display = "inline-block"; // Mostrar spinner
 
         // Guardar cita en Firestore
-        await addDoc(collection(db, 'appointments'), {
+        await db.collection('appointments').add({
             name: name,
             phone: phone,
             time: time,
@@ -90,6 +75,9 @@ async function saveAppointment() {
         userNameInput.value = '';
         userPhoneInput.value = '';
         appointmentSelected = null;
+        
+        // Recargar datos
+        loadAppointments();
 
     } catch (error) {
         console.error('Error al guardar:', error);
@@ -111,42 +99,31 @@ async function saveAppointment() {
 }
 
 // ============================================
-// FUNCIONES DE FIREBASE - ESCUCHA EN TIEMPO REAL
+// FUNCIONES DE FIREBASE - CARGAR CITAS
 // ============================================
-let unsubscribeRealtime = null;
-
-function startRealtimeUpdates() {
+async function loadAppointments() {
     try {
         const today = new Date().toLocaleDateString('es-ES');
-        const appointmentsQuery = query(
-            collection(db, 'appointments'),
-            where('date', '==', today),
-            where('status', '==', 'confirmada'),
-            orderBy('timestamp', 'asc')
-        );
+        const snapshot = await db.collection('appointments')
+            .where('date', '==', today)
+            .where('status', '==', 'confirmada')
+            .get();
 
-        if (unsubscribeRealtime) {
-            return;
-        }
+        appointments.length = 0; // Limpiar array
 
-        unsubscribeRealtime = onSnapshot(appointmentsQuery, (snapshot) => {
-            appointments.length = 0; // Limpiar array local
-
-            snapshot.forEach(doc => {
-                appointments.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
+        snapshot.forEach(doc => {
+            appointments.push({
+                id: doc.id,
+                ...doc.data()
             });
-
-            console.log('Datos actualizados desde Firebase en tiempo real');
-            displayAppointments();
-            updateTimeSlots();
-        }, (error) => {
-            console.error('Error en la escucha en tiempo real:', error);
         });
+
+        // Actualizar la UI
+        displayAppointments();
+        updateTimeSlots();
+
     } catch (error) {
-        console.error('Error al iniciar actualizaciones en tiempo real:', error);
+        console.error('Error al cargar las citas:', error);
     }
 }
 
@@ -321,7 +298,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    startRealtimeUpdates();
+    loadAppointments();
+    setInterval(loadAppointments, 5000);
 });
 
 // ============================================
@@ -330,8 +308,9 @@ document.addEventListener('DOMContentLoaded', function() {
 async function deleteAppointment(docId) {
     if (confirm("¿Marcar como terminada o eliminar?")) {
         try {
-            await deleteDoc(doc(db, 'appointments', docId));
+            await db.collection('appointments').doc(docId).delete();
             alert("Cita eliminada");
+            loadAppointments(); // Recargar lista
         } catch (error) {
             console.error("Error al eliminar:", error);
         }
@@ -345,10 +324,9 @@ async function deleteAllAppointments() {
     if (confirm("¿ESTÁS SEGURO? Esto borrará todas las citas de la lista.")) {
         try {
             const today = new Date().toLocaleDateString('es-ES');
-            const snapshot = await getDocs(query(
-                collection(db, 'appointments'),
-                where('date', '==', today)
-            ));
+            const snapshot = await db.collection('appointments')
+                .where('date', '==', today)
+                .get();
 
             if (snapshot.empty) {
                 alert("No hay citas para borrar.");
@@ -356,13 +334,14 @@ async function deleteAllAppointments() {
             }
 
             // Borrar cada documento encontrado
-            const batch = writeBatch(db);
-            snapshot.forEach((docSnapshot) => {
-                batch.delete(docSnapshot.ref);
+            const batch = db.batch();
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
             });
 
             await batch.commit();
             alert("¡Agenda de hoy limpiada con éxito!");
+            loadAppointments(); // Recargar la lista y los slots
         } catch (error) {
             console.error("Error al borrar todo:", error);
             alert("Hubo un error al intentar vaciar la agenda.");
@@ -370,6 +349,5 @@ async function deleteAllAppointments() {
     }
 }
 
-// Hacer las funciones accesibles globalmente
-window.deleteAppointment = deleteAppointment;
+// Hacer la función accesible globalmente
 window.deleteAllAppointments = deleteAllAppointments;
