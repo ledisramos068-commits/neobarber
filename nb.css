@@ -1,39 +1,69 @@
 /* Configuración General y Fondo Industrial */
 body {
-    font-family: 'Roboto', sans-serif;
-    background: radial-gradient(circle, #2c2c2c 0%, #000000 100%);
+    /* Fondo con capa oscura transparente (75%) y tu imagen */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('babrberia.png');
+    
+    /* Propiedades para que se adapte perfecto a computadores y celulares */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
+    
+    /* Configuración de flex y colores */
+    font-family: 'Roboto', sans-serif;
     color: white;
     display: flex;
-    flex-direction: column; /* Esto obliga a que los elementos se apilen uno arriba de otro */
-    align-items: center;    /* Centra todo horizontalmente */
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     min-height: 100vh;
     margin: 0;
+    justify-content: center;
 }
 
 /* Contenedor Efecto Cristal (Glassmorphism) */
 .container {
+    /* Color blanco de fondo con un 5% de opacidad (casi transparente) */
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    width: 100%;
+    
+    /* EL TRUCO MÁGICO: Aplica el desenfoque al fondo que está detrás */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Compatibilidad para Safari e iOS */
+    
+    /* Borde muy delgado y semitransparente para simular el reflejo del cristal */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    
+    /* Esquinas redondeadas */
+    border-radius: 20px;
+    
+    /* Sombra suave alrededor para separarlo del fondo */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* Espaciado interno y ancho máximo */
+    padding: 30px;
+    width: 90%;
     max-width: 500px;
-    padding: 40px 20px;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    box-sizing: border-box;
     text-align: center;
 }
 
 /* Título Neón */
 h1 {
     font-family: 'Orbitron', sans-serif;
-    color: #ff8c00;
-    font-size: 2.8rem;
-    margin-bottom: 10px;
+    color: #00d2ff; /* Azul cian brillante para el centro del texto */
+    font-size: 2.5rem;
     text-transform: uppercase;
-    text-shadow: 0 0 10px #ff8c00, 0 0 20px #ff4500;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    
+    /* Capas de sombra neón: las primeras dan el brillo interno y las últimas el destello expansivo */
+    text-shadow: 
+        0 0 5px #00d2ff,
+        0 0 10px #00d2ff,
+        0 0 20px #0099ff,
+        0 0 40px #0055ff,
+        0 0 60px #0022aa;
 }
 
 .subtitle { color: #aaa; font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 1px; }
@@ -43,7 +73,7 @@ input {
     width: 85%;
     padding: 15px;
     margin: 10px 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     color: white;
@@ -52,10 +82,12 @@ input {
     transition: 0.3s;
 }
 
+/* Al hacer clic en ellos (focus), el borde brilla azul como el título */
 input:focus {
+    border-color: #00d2ff;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
     outline: none;
-    border-color: #ff8c00;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 /* Cuadrícula de Horarios Neón */
